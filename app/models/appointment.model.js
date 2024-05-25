@@ -1,41 +1,37 @@
 const {Sequelize, DataTypes} = require('sequelize')
 const sequelize = require("../configDB")
 
-const Order = sequelize.define("Order", {
-
-    order_id: {
+const appointment = sequelize.define("Appointment", {
+    appointment_id: {
         primaryKey: true,
         autoIncrement: true,
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    nameBuyer: {
+    pet_name: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    purchaseNumber: {
-        type: DataTypes.INTEGER,
+    owner_name: {
+        type: DataTypes.STRING,
         allowNull: false
     },
-    orderDescription: {
-        type: DataTypes.INTEGER,
+    appointment_date: {
+        type: DataTypes.DATE,
         allowNull: false
     },
-    unitPrice: {
-        type: DataTypes.DOUBLE,
-        allowNull: false
-    },
-
-    orderTable: {
+    description: {
         type: DataTypes.STRING,
         allowNull: false
     }
+}, {
+    tableName: 'appointments' // Asegúrate de que este sea el nombre correcto de tu tabla
 });
 
 sequelize.sync().then(() => {
-    console.log('Orders table created successfully!');
- }).catch((error) => {
+    console.log('Appointment table created successfully!');
+}).catch((error) => {
     console.error('Unable to create table : ', error);
- });
+});
 
-module.exports = Order;
+module.exports = appointment;

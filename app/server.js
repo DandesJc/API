@@ -3,7 +3,8 @@ const app = express()
 const router =  require("./routes/index.routes")
 const bodyParser = require("body-parser")
 const sequelize = require('./configDB')
-const user = require("./models/order.model")
+const user = require("./models/user.model")
+const client = require("./models/appointment.model")
 
 const port = process.env.PORT || 8080
 
@@ -21,7 +22,7 @@ console.log(`API escuchando en el http://localhost:${port}`)
 //     res.json({message: 'Welcome to our API!'})
 // })
 
-
+app.use(express.json());
 app.use('/api', router);
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())

@@ -1,7 +1,9 @@
 const router = require('express').Router();
-const order = require('./order.routes');
+const user = require('./user.routes');
+const appointment = require('./appointment.routes');
 
-router.use('/order', order);
+router.use('/users', user);
+router.use('/appointment', appointment);
 
 router.get('/', function(req, res) {
     res.status(200).json({message: 'Estás conectado a nuesta API'})
