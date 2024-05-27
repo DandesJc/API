@@ -1,28 +1,27 @@
 const {Sequelize, DataTypes} = require('sequelize')
-const sequelize = require("../configDB");
+const sequelize = require("../configDB")
 
-const Order = sequelize.define("Orders", {
-
-    order_id: {
+const User = sequelize.define("Users", {
+    user_id: {
         primaryKey: true,
         autoIncrement: true,
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    buyer_name: {
+    name: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    purchase_number: {
+    lastname: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    order_description: {
+    username: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    order_table: {
-        type: DataTypes.STRING,
+    password: {
+        type: DataTypes.DOUBLE,
         allowNull: false
     },
 });
@@ -33,4 +32,4 @@ sequelize.sync().then(() => {
     console.error('Unable to create table : ', error);
  });
 
-module.exports = Order;
+module.exports = User;

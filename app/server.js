@@ -3,7 +3,8 @@ const app = express()
 const router =  require("./routes/index.routes")
 const bodyParser = require("body-parser")
 const sequelize = require('./configDB')
-const user = require("./models/order.model")
+
+const models = require("./models/index.model")
 
 const port = process.env.PORT || 8080
 
