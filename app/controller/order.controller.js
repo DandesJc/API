@@ -2,14 +2,20 @@ const Sequelize = require("sequelize");
 const order = require("../models/order.model");
 const orderFood = require ("../models/ManyToMany/OrderFoods.models")
 
-const orderFoodsRelationship = (req, res) => {
+const orderFoodsRelationship = async (req, res) => {
     try {
-        orderFood.create({
-            OrderOrderId: req.body.order_id,
-            FoodFoodId: req.body.food_id,
-            quantity: req.body.quantity
-        }).then(result => res.status(400).send({"Order Details": result}))
-        .catch(error => res.status(400).send({"Error Details":error}));
+        const orderId = order.findOne({where: {
+            buyer_name: req.body.nameBuyer
+        }}).then(() => {
+            orderFood.create({
+                OrderOrderId: orderId,
+                FoodFoodId: req.body.food_id,
+                quantity: req.body.quantity,
+                total_price: req.body.total_price
+            }).then(result => res.status(200).send({"Order Details": result}))
+            .catch(error => res.status(400).send({"Error Details":error}));
+        });
+
     }catch(e) {
         console.log(e.message);
     }
@@ -18,11 +24,11 @@ const orderFoodsRelationship = (req, res) => {
 const createOrder = async (req, res) => {
     try {
         order.create({
-            nameBuyer: req.body.nameBuyer,
-            purchaseNumber: req.body.purchaseNumber,
-            orderDescription: req.body.orderDescription,
-            orderTable: req.body.orderTable,
-        }).then((req, res) => {
+            buyer_name: req.body.nameBuyer,
+            purchase_number: req.body.purchaseNumber,
+            order_description: req.body.orderDescription,
+            order_table: req.body.orderTable,
+        }).then(() => {
             return orderFoodsRelationship(req, res)
         })
         .catch(error => res.status(400).send({"Error Details":error}))
@@ -45,6 +51,30 @@ const getOrder = async (req, res) => {
         res.status(500).send(e.message)
     } 
 }
+
+
+const getUserOrder = async (req, res) => {
+    try {
+        const OrderIds = [];
+        const orderResult = await order.findAll({
+            where: {buyer_name: req.body.nameBuyer}
+        });
+     
+        if(orderResult && orderResult.length > 1) {
+            orderResult.map(async (data) => {
+                OrderIds.push(
+                    await orderFood.findByPk(data.order_id)
+                );
+            });
+        }
+
+        return res.status(200).send(OrderIds)
+
+    }catch(e) {
+        res.status(500).send(e.message)
+    } 
+}
+
 
 const updateOrder = async (req, res) => {
     try {
@@ -95,5 +125,6 @@ module.exports = {
     createOrder,
     getOrder,
     updateOrder,
-    deleteOrder
+    deleteOrder,
+    getUserOrder
 };

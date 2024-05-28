@@ -8,6 +8,7 @@ router.post("/createOrder", (req, res) => {
 });
 
 router.get("/getOrder", (req, res) => order.getOrder(req, res));
+router.get("/getUsersOrder", (req, res) => order.getUsersOrder(req, res));
 
 router.put("/updateOrder", (req, res) => order.updateOrder(req, res));
 

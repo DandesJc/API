@@ -22,7 +22,7 @@ console.log(`API escuchando en el http://localhost:${port}`)
 //     res.json({message: 'Welcome to our API!'})
 // })
 
-
+app.use(express.json())
 app.use('/api', router);
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
