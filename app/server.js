@@ -1,33 +1,37 @@
+'use strict'
+
 const express = require('express')
 const app = express()
 const router =  require("./routes/index.routes")
 const bodyParser = require("body-parser")
 const sequelize = require('./configDB')
 
-const models = require("./models/index.model")
+const models = require('./models/index.model');
 
-const port = process.env.PORT || 8080
+const port = process.env.PORT || 8080;
 
+// Middleware setup
+app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use('/api', router);
 
-sequelize.sync().then();
-
-app.get('/', function(req, res) {
-    res.json({mensaje: "Server is up!"});
+// Synchronize sequelize models
+sequelize.sync().then(() => {
+    console.log('Database synchronized');
+}).catch(err => {
+    console.error('Error synchronizing database:', err);
 });
 
-app.listen(port)
-console.log(`API escuchando en el http://localhost:${port}`)
+// Define routes
+app.get('/', (req, res) => {
+    console.log("Request body:", req.body);
+    res.json({ mensaje: "Server is up!" });
+});
 
-// router.get('/', function(req, res) {
-//     res.json({message: 'Welcome to our API!'})
-// })
+// Start the server
+app.listen(port, () => {
+    console.log(`API listening at http://localhost:${port}`);
+});
 
-app.use(express.json())
-app.use('/api', router);
-app.use(bodyParser.urlencoded({extended: true}))
-app.use(bodyParser.json())
-
-
-// router.post('/', function(req, res) {
-//     res.json({mensaje: req.body.nombre})
-// })
+module.exports = app;

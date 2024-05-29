@@ -3,6 +3,7 @@ const food = require("../models/food.model");
 
 const createFood = async (req, res) => {
     try {
+        console.log("///////////",req.body);
         food.create({
             food_name: req.body.food_name,
             food_price: req.body.food_price,
@@ -10,7 +11,7 @@ const createFood = async (req, res) => {
         }).then((req, res) => {
             return res.status(200).send({message: `${req.body.food_name} succesfully agregate`});
         })
-        .catch(error => res.status(400).send({"Error Details":error}))
+        .catch(error => res.status(400).send({"Error Details":error.message}))
     }catch(e) {
         console.log(e.message)
     };

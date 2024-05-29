@@ -23,6 +23,7 @@ const orderFoodsRelationship = async (req, res) => {
 
 const createOrder = async (req, res) => {
     try {
+        console.log(req.body)
         order.create({
             buyer_name: req.body.nameBuyer,
             purchase_number: req.body.purchaseNumber,
